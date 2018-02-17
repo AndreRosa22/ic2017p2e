@@ -32,7 +32,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
+#include <g2.h>
+#include <g2_X11.h>
 /** Horizontal world size. */
 #define WORLD_X 20
 
@@ -40,17 +41,20 @@
 #define WORLD_Y 20
 
 /** Number of human agents. */
-#define NHUMANS 20
+#define NHUMANS 4
 
 /** Number of zombie agents. */
-#define NZOMBIES 20
+#define NZOMBIES 4
 
 /** Number of playable human agents. */
-#define NHUMANS_PLAY 1
+#define NHUMANS_PLAY 3
 
 /** Number of playable zombie agents. */
-#define NZOMBIES_PLAY 0
+#define NZOMBIES_PLAY 3
 
+#define TURNOS 10
+
+int contar = 0; 
 /**
  * Structure defining agent properties.
  *
@@ -62,6 +66,8 @@ typedef struct {
     AGENT_TYPE type;        /**< Agent type.        */
     unsigned char playable; /**< Is agent playable? */
     unsigned short id;      /**< Agent ID.          */
+    unsigned int x;
+    unsigned int y;
 } AGENT;
 
 /* This function is an implementation of the definition provided by the
@@ -99,7 +105,9 @@ int main() {
     /* ************************************* */
     /* Create and place human agents in grid */
     /* ************************************* */
-    for (int i = 0; i < NHUMANS; ++i) {
+    contar = NHUMANS;
+    while (contar != 0 ){
+    for (int i = 0; i < NHUMANS; i++) {
 
         /* Determine random x and y coordinates. */
         unsigned int x = rand() % WORLD_X;
@@ -119,10 +127,13 @@ int main() {
             ag->type = Human;
             ag->playable = playable;
             ag->id = (unsigned short) i;
+            
+            
 
             /* Put agent in grid. In a real project you should probably have
                a world_put() function or similar (like in Aula 12). */
             grid[x][y] = ag;
+            contar--;
 
         } else {
 
@@ -134,13 +145,16 @@ int main() {
         }
 
     }
+}
 
     /* ********************************************************************* */
     /* Create and place zombie agents in grid. This for loop is very similar */
     /* to the previous one for humans, so consider putting this common code  */
     /* in a function.                                                        */
     /* ********************************************************************* */
-    for (int i = 0; i < NZOMBIES; ++i) {
+    contar = NZOMBIES;
+    while (contar != 0){
+    for (int i = 0; i < NZOMBIES; i++) {
 
         /* Determine random x and y coordinates. */
         unsigned int x = rand() % WORLD_X;
@@ -160,10 +174,12 @@ int main() {
             ag->type = Zombie;
             ag->playable = playable;
             ag->id = (unsigned short) i + NHUMANS;
+           
 
             /* Put agent in grid. In a real project you should probably have
                a world_put() function or similar (like in Aula 12). */
             grid[x][y] = ag;
+            contar--;
 
         } else {
 
@@ -175,15 +191,88 @@ int main() {
         }
 
     }
+}
 
     /* ********************************************************************* */
     /* Update display using the showworld_update() function, as declared in  */
     /* the showworld.h file.                                                 */
     /* ********************************************************************* */
-    showworld_update(sw, grid);
+  
+showworld_update(sw, grid);
 
+for(int t=1; t<=TURNOS; t++){
+	char tecla =' ';
+	printf("Turno %d \n", t);
+	printf("escolhe a tua jogada '2, 4, 6, 8' \n");
+	while (tecla != '2' && tecla != '4' && tecla != '6' && tecla != '8') {
+
+		scanf(" %c", &tecla);
+		getchar();
+		
+		switch (tecla) {
+		case '2': 
+			for (int i = 0; i <WORLD_X; i++) {
+				for (int j = 0; j < WORLD_Y; j++) {
+					if (grid[i][j] != NULL) {
+						if (j-1 >= 0){
+							grid[i][j-1] = grid[i][j];
+							grid[i][j] = None;
+						}
+					}
+				}
+			}
+			
+			break;
+		case '4':
+			for (int i = 0; i < WORLD_X; i++) {
+				for (int j = 0; j < WORLD_Y; j++) {
+					if (grid[i][j] != NULL){
+						if (i-1 >= 0){
+							grid[i-1][j] = grid[i][j];
+							grid[i][j] = None;
+						}
+					}
+				}
+			}
+			break;	
+		case '6':
+			for (int i = 19; i >= 0; i--) {
+				for (int j = 19; j >= 0; j--) {
+					if (grid[i][j] != NULL){
+						if (i+1 <= 19){
+							grid[i+1][j] = grid[i][j];
+							grid[i][j] = None;
+						}
+					}
+				}
+			}
+			
+			break;
+		case '8':
+			for (int i = 19; i >= 0; i--) {
+				for (int j = 19; j >= 0; j--) {
+					if (grid[i][j] != NULL){
+						if (j+1 <= 19){
+							grid[i][j+1] = grid[i][j];
+							grid[i][j] = None;
+						}
+					}
+				}
+			}
+			break;
+		
+		default:
+			printf("Essa tecla não é aceite, escolha 2,4,6,8\n");
+			break;
+		}
+	}
+	showworld_update(sw, grid);
+}
+   
+    
+    showworld_update(sw, grid);
     /* Before finishing, ask user to press ENTER. */
-    printf("Press ENTER to continue...");
+    printf("Press ENTER to continue...\n");
     getchar();
 
     /* Destroy all agents. */
@@ -202,7 +291,8 @@ int main() {
 
     /* Bye. */
     return 0;
-}
+	}
+
 
 /**
  * This function is an implementation of the ::get_agent_info_at() function
