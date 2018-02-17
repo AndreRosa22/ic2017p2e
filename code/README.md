@@ -45,6 +45,15 @@ No caso de se estar a jogar com o modo interativo, cada número do teclado numé
 No caso: **8-Cima; 2-Baixo; 4-Esquerda; 6-Direita**; 
 Sendo estas as únicas direções que cada um dos agentes se consegue mover, pois o jogo funciona com uma **vizinhança de Von Neumann**;
 
+O jogo conta com uma interface gráfica desenvolvida em G2 bastante simplista mas de facil percepção. Todos os agentes são "bolas"
+cada uma com a sua cor de forma a diferenciar cada um deles.
+
+**Bola Verde (HP)**- Humanos jogáveis;
+**Bola Azul (ZP)**- Zombies jogáveis;
+**Bola Vermelha (Z)**- Zombies controlados pela I.A;
+**Bola Cinzenta ( )**- Espaço livre;
+**Bola Preta (U)**- Unknown;
+
 ## Conclusions
 
 Ao desenvolver este trabalho conseguimos aprofundar, aplicar e perceber melhor os conhecimentos adquiridos em aula. 
