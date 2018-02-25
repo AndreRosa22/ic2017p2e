@@ -88,6 +88,11 @@ cada uma com a sua cor de forma a diferenciar cada um deles.
 
 **5º** O jogo acaba quando forem jogados todos os turnos, sendo que pede ao jogador que prima a tecla ENTER para encerrar o mesmo.
 
+Os zombies podem infetar os humanos ao moverem-se para as mesma coordenadas que um humano, nesse caso o humano transforma-se num zombie.
+Apenas os agentes jogáveis se podem mexer.
+O jogo acaba quando : os humanos forem todos infetados;
+                      quando acaberem os turnos ainda ouver humanos por infeta; 
+
 ## Conclusions
 
 Ao desenvolver este trabalho conseguimos aprofundar, aplicar e perceber melhor os conhecimentos adquiridos em aula. 
